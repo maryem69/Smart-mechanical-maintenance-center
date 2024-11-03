@@ -79,7 +79,7 @@ bool Service::supprimer(int IDM)
     QSqlQuery query;
     QString res = QString::number(IDM);
     query.prepare("DELETE FROM SERVICE WHERE IDM = :IDM");
-    query.bindValue(":IDM", res);
+    query.bindValue(":IDM", IDM);
 
     if (!query.exec()) {
         qDebug() << "Delete query failed: " << query.lastError().text();

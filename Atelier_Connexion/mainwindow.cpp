@@ -73,19 +73,37 @@ void MainWindow::on_pushButton_ajouter_clicked()
 
 void MainWindow::on_pushButton_supprimer_clicked()
 {
-    int ID;
-    ID=ui->lineEdit_id->text().toInt();
-    qDebug() << "Attempting to delete IDM:" << ID;
-    bool test;
-    test=Etmp.supprimer(ID);
+    QString idText = ui->lineEdit_id_delete->text().trimmed(); // Correct the name to lineEdit_id_delete
+    qDebug() << "Input from lineEdit_id_delete:" << idText; // Print the input for debugging
 
-    if(test)
-    {
+    // Check if the input is empty
+    if (idText.isEmpty()) {
+        QMessageBox::warning(this, "Input Error", "Please enter an ID to delete.");
+        return; // Exit if the input is empty
+    }
+
+    bool ok; // Variable to check if conversion was successful
+    int ID = idText.toInt(&ok); // Convert to integer
+
+    if (!ok) {
+        QMessageBox::warning(this, "Input Error", "Invalid ID input.");
+        return; // Exit if the input is invalid
+    }
+
+    qDebug() << "Attempting to delete IDM:" << ID;
+
+    bool test = Etmp.supprimer(ID);
+
+    if (test) {
         ui->tableView->setModel(Etmp.afficher());
-        QMessageBox::information(nullptr, QObject::tr("OK"),QObject::tr("Suppresion effectué\n""click cancel to exit."), QMessageBox::Cancel);
-    }else
-        QMessageBox::critical(nullptr, QObject::tr("Not OK"),QObject::tr("Suppresion non effectué\n""click cancel to exit."), QMessageBox::Cancel);
+        QMessageBox::information(nullptr, QObject::tr("OK"), QObject::tr("Suppression effectuée\nClick cancel to exit."), QMessageBox::Cancel);
+    } else {
+        QMessageBox::critical(nullptr, QObject::tr("Not OK"), QObject::tr("Suppression non effectuée\nClick cancel to exit."), QMessageBox::Cancel);
+    }
 }
+
+
+
 
 void MainWindow::on_pushButton_update_clicked()
 {
