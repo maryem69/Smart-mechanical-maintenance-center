@@ -13,8 +13,8 @@ Connection::Connection()
 bool Connection::createconnect()
 {bool test=false;
 db = QSqlDatabase::addDatabase("QODBC");
-db.setDatabaseName("CPP_Project");//inserer le nom de la source de données
-db.setUserName("Aymen");//inserer nom de l'utilisateur
+db.setDatabaseName("CPP_project");//inserer le nom de la source de données
+db.setUserName("aymen");//inserer nom de l'utilisateur
 db.setPassword("xiozzahs");//inserer mot de passe de cet utilisateur
 
 

@@ -4,6 +4,23 @@
 #include <QString>
 #include "service.h"
 #include <QSqlTableModel>
+#include <QSqlQuery>
+#include <QSqlError>
+#include <QDebug>
+#include <QMap>
+#include <QString>
+#include <QtCharts/QChartView>
+#include <QtCharts/QPieSeries>
+#include <QtCharts/QChart>
+#include <QPushButton>
+#include <QVBoxLayout>
+#include <QWidget>
+#include <QDateTime>
+#include <QTextStream>
+#include <QFile>
+#include <QDebug>
+
+
 
 Service::Service()
     : IDM(0), Prix(0.0) // Initialize numeric fields to 0 or default values

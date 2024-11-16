@@ -39,6 +39,7 @@ public:
     bool update();
     QSqlQueryModel* search(const QString &searchTerm);
     QMap<QString, double> getRevenueByService();
+
 };
 
 #endif // SERVICE_H
