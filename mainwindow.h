@@ -14,7 +14,7 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-
+    void alerte();
 private slots:
     void on_ajouterButton_clicked();
 
@@ -27,6 +27,13 @@ private slots:
     void on_matriculeInput_3_textChanged(const QString &arg1);
 
     void on_pushButton_2_clicked();
+
+    void on_pushButton_3_clicked();
+
+
+    void on_calendarWidget_clicked(const QDate &date);
+
+    void on_pushButton_4_clicked();
 
 private:
     Ui::MainWindow *ui;

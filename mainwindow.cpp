@@ -24,12 +24,12 @@ void MainWindow::on_ajouterButton_clicked()
     QString MODELE=ui->modeleInput->text();
     QString KILOMETRAGE=ui->kilometrageInput->text();
     QString DATE_ARRIVAGE=ui->dateArrivageInput->date().toString();
-    QString DATE_SORTIE=ui->dateSortieInput->date().toString();
+    QDate DATE_SORTIE=ui->dateSortieInput->date();
     QString TYPE_DE_PANNE=ui->tt->text();
     QRegularExpression matriculeRegex(R"(^\d{4} [A-Z]{3} \d{3}$)");
 
     voiture v(MATRICULE,MARQUE,MODELE,KILOMETRAGE,DATE_ARRIVAGE,DATE_SORTIE,TYPE_DE_PANNE);
-    if(MATRICULE =="" || MARQUE =="" || MODELE =="" || KILOMETRAGE =="" || DATE_ARRIVAGE =="" || DATE_SORTIE =="" || TYPE_DE_PANNE =="" )
+    if(MATRICULE =="" || MARQUE =="" || MODELE =="" || KILOMETRAGE =="" || DATE_ARRIVAGE =="" || TYPE_DE_PANNE =="" )
     {
         QMessageBox::critical(nullptr, QObject::tr("erreur"),
                     QObject::tr("veuillez remplir les champs\n"), QMessageBox::Cancel);
@@ -76,7 +76,7 @@ void MainWindow::on_modifierButton_clicked()
     QString MODELE=ui->modeleInput->text();
     QString KILOMETRAGE=ui->kilometrageInput->text();
     QString DATE_ARRIVAGE=ui->dateArrivageInput->date().toString();
-    QString DATE_SORTIE=ui->dateSortieInput->date().toString();
+    QDate DATE_SORTIE=ui->dateSortieInput->date();
     QString TYPE_DE_PANNE=ui->tt->text();
     voiture v(MATRICULE,MARQUE,MODELE,KILOMETRAGE,DATE_ARRIVAGE,DATE_SORTIE,TYPE_DE_PANNE);
     v.modifier();
@@ -122,4 +122,59 @@ void MainWindow::on_pushButton_2_clicked()
         chartView->show();
 
 
+}
+void MainWindow::alerte()
+{
+     QDate currentDate = QDate::currentDate();
+     QSqlQuery query;
+        query.prepare("SELECT matricule, date_sortie FROM voiture WHERE date_sortie BETWEEN :currentDate AND :Date");
+        query.bindValue(":currentDate", currentDate);
+        query.bindValue(":Date", currentDate.addDays(3));
+
+        if (!query.exec()) {
+            qDebug() << "Error executing query:";
+            return;
+        }
+        QString warningMessage;
+           while (query.next()) {
+               QString matricule = query.value("matricule").toString();
+               QDate dateSortie = query.value("date_sortie").toDate();
+               warningMessage += QString("Car with matricule '%1' has a sortie date on %2\n")
+                                     .arg(matricule, dateSortie.toString());
+           }
+
+           // Display warning if there are cars meeting the condition
+           if (!warningMessage.isEmpty()) {
+               QMessageBox::warning(nullptr, "Upcoming Date Sortie Warnings", warningMessage);
+           } else {
+               QMessageBox::information(nullptr, "No Warnings", "No cars have a sortie date within 3 days.");
+           }
+
+}
+void MainWindow::on_pushButton_3_clicked()
+{
+    ui->stackedWidget->setCurrentIndex(0);
+}
+
+void MainWindow::on_calendarWidget_clicked(const QDate &date)
+{
+    QSqlQuery query;
+    query.prepare("SELECT matricule FROM voiture WHERE date_sortie = :date");
+       query.bindValue(":date", date);
+
+       if (!query.exec()) {
+           QMessageBox::critical(this, "Query Error", "error");
+           return;
+       }
+       ui->listWidget->clear();
+
+          // Populate the list with results
+          while (query.next()) {
+              ui->listWidget->addItem(query.value("matricule").toString());
+          }
+}
+
+void MainWindow::on_pushButton_4_clicked()
+{
+    ui->stackedWidget->setCurrentIndex(1);
 }

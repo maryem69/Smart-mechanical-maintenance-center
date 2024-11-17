@@ -11,7 +11,7 @@ voiture::voiture(QString MATRICULE,
                  QString MODELE,
                  QString KILOMETRAGE,
                  QString DATE_ARRIVAGE,
-                 QString DATE_SORTIE,
+                 QDate DATE_SORTIE,
                  QString TYPE_DE_PANNE)
 {
     this->MATRICULE=MATRICULE;

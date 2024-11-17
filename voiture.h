@@ -2,6 +2,7 @@
 #define VOITURE_H
 #include <QString>
 #include <QSqlQueryModel>
+#include <QDate>
 class voiture
 {
     QString MATRICULE;
@@ -9,7 +10,7 @@ class voiture
     QString MODELE;
     QString KILOMETRAGE;
     QString DATE_ARRIVAGE;
-    QString DATE_SORTIE;
+    QDate DATE_SORTIE;
     QString TYPE_DE_PANNE;
 public:
     voiture();
@@ -18,7 +19,7 @@ public:
     QString MODELE,
     QString KILOMETRAGE,
     QString DATE_ARRIVAGE,
-    QString DATE_SORTIE,
+    QDate DATE_SORTIE,
     QString TYPE_DE_PANNE);
 
     void ajouter();
